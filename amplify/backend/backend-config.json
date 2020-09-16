@@ -16,5 +16,13 @@
         }
       }
     }
+  },
+  "auth": {
+    "amplifyreactappb65c59c4": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false
+    }
   }
 }
