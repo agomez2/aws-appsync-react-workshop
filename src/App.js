@@ -1,7 +1,7 @@
 // src/App.js
 import React from 'react';
 
-import { API, graphqlOperation } from 'aws-amplify'
+import { API, graphqlOperation, Auth } from 'aws-amplify'
 // import uuid to create a unique client ID
 import {v4 as uuid} from "uuid";
 
@@ -15,6 +15,7 @@ import { createTalk as CreateTalk } from './graphql/mutations'
 
 const CLIENT_ID = uuid()
 
+
 class App extends React.Component {
   // define some state to hold the data returned from the API
   state = {
@@ -24,11 +25,14 @@ class App extends React.Component {
   // execute the query in componentDidMount
   async componentDidMount() {
     try {
-      const talkData = await API.graphql(graphqlOperation(ListTalks))
-      console.log('talkData:', talkData)
-      this.setState({
-        talks: talkData.data.listTalks.items
-      })
+        const user = await Auth.currentAuthenticatedUser()
+        console.log('user:', user)
+        console.log('user info:', user.signInUserSession.idToken.payload)
+        const talkData = await API.graphql(graphqlOperation(ListTalks))
+        console.log('talkData:', talkData)
+        this.setState({
+            talks: talkData.data.listTalks.items
+        })
     } catch (err) {
       console.log('error fetching talks...', err)
     }
